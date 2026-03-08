@@ -60,6 +60,12 @@ set -g set-titles-string "#T"
 bind-key = select-layout even-horizontal
 bind-key | select-layout even-vertical
 
+# Select panes
+bind-key j select-pane -D
+bind-key k select-pane -U
+bind-key h select-pane -L
+bind-key l select-pane -R
+
 # Resize panes
 bind-key J resize-pane -D 5
 bind-key K resize-pane -U 5
