@@ -1,27 +1,13 @@
 call plug#begin('~/.vim/plugged')
 
-Plug 'AndrewRadev/splitjoin.vim'
 Plug 'ConradIrwin/vim-bracketed-paste'
 Plug 'Raimondi/delimitMate'
-Plug 'SirVer/ultisnips'
-Plug 'corylanou/vim-present', {'for' : 'present'}
 Plug 'ctrlpvim/ctrlp.vim'
 Plug 'ekalinin/Dockerfile.vim', {'for' : 'Dockerfile'}
 Plug 'elzr/vim-json', {'for' : 'json'}
-Plug 'fatih/vim-go'
-Plug 'fatih/vim-hclfmt'
-Plug 'fatih/vim-nginx' , {'for' : 'nginx'}
 Plug 'tomasr/molokai'
-Plug 'hashivim/vim-hashicorp-tools'
 Plug 'scrooloose/nerdtree'
-Plug 't9md/vim-choosewin'
 Plug 'tmux-plugins/vim-tmux', {'for': 'tmux'}
-Plug 'tpope/vim-commentary'
-Plug 'tpope/vim-eunuch'
-Plug 'tpope/vim-fugitive'
-Plug 'tpope/vim-repeat'
-Plug 'tpope/vim-scriptease'
-Plug 'mileszs/ack.vim'
 
 call plug#end()
 
@@ -160,15 +146,6 @@ function! StatusLinePercent()
   return (100 * line('.') / line('$')) . '%'
 endfunction
 
-function! StatusLineLeftInfo()
- let branch = fugitive#head()
- let filename = '' != expand('%:t') ? expand('%:t') : '[No Name]'
- if branch !=# ''
-   return printf("%s | %s", branch, filename)
- endif
- return filename
-endfunction
-
 exe 'hi! myInfoColor ctermbg=240 ctermfg=252'
 
 " start building our statusline
@@ -181,16 +158,7 @@ set statusline+=%*
 
 " left information bar (after mode)
 set statusline+=%#myInfoColor#
-set statusline+=\ %{StatusLineLeftInfo()}
 set statusline+=\ %*
-
-" go command status (requires vim-go)
-set statusline+=%#goStatuslineColor#
-set statusline+=%{go#statusline#Show()}
-set statusline+=%*
-
-" right section seperator
-set statusline+=%=
 
 " filetype, percentage, line number and column number
 set statusline+=%#myInfoColor#
@@ -422,45 +390,6 @@ let NERDTreeShowHidden=1
 let g:ackprg = 'ag --vimgrep --smart-case'                                                   
 " ==================== vim-json ====================
 let g:vim_json_syntax_conceal = 0
-
-" ==================== UltiSnips ====================
-function! g:UltiSnips_Complete()
-  call UltiSnips#ExpandSnippet()
-  if g:ulti_expand_res == 0
-    if pumvisible()
-      return "\<C-n>"
-    else
-      call UltiSnips#JumpForwards()
-      if g:ulti_jump_forwards_res == 0
-        return "\<TAB>"
-      endif
-    endif
-  endif
-  return ""
-endfunction
-
-function! g:UltiSnips_Reverse()
-  call UltiSnips#JumpBackwards()
-  if g:ulti_jump_backwards_res == 0
-    return "\<C-P>"
-  endif
-
-  return ""
-endfunction
-
-
-if !exists("g:UltiSnipsJumpForwardTrigger")
-  let g:UltiSnipsJumpForwardTrigger = "<tab>"
-endif
-
-if !exists("g:UltiSnipsJumpBackwardTrigger")
-  let g:UltiSnipsJumpBackwardTrigger="<s-tab>"
-endif
-
-au InsertEnter * exec "inoremap <silent> " . g:UltiSnipsExpandTrigger . " <C-R>=g:UltiSnips_Complete()<cr>"
-au InsertEnter * exec "inoremap <silent> " . g:UltiSnipsJumpBackwardTrigger . " <C-R>=g:UltiSnips_Reverse()<cr>"
-
-
 
 " ==================== Various other plugin settings ====================
 nmap  -  <Plug>(choosewin)
